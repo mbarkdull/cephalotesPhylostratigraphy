@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mkdir -p /workdir/$USER/tmp
+
+cp /home/mb2337/Megan/Chapter2/CVAR/CVAR_OGS_v1.0_pep.fasta ./proteomeSequences/
+
+source /programs/miniconda3/bin/activate orthofinder-2.5.4
+
+orthofinder -S diamond -t 63 -f ./proteomeSequences -M msa

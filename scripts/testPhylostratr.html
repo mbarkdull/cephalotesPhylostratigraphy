@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Zebulun Arendsee" />
+
+<meta name="date" content="2024-07-01" />
+
+<title>Arabidopsis thaliana case study</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore"><em>Arabidopsis thaliana</em> case
+study</h1>
+<h4 class="author">Zebulun Arendsee</h4>
+<h4 class="date">2024-07-01</h4>
+
+
+
+<p><code>phylostratr</code> divides a phylostratigraphy analysis into 6
+steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Acquire a species tree with species identifiers (e.g. NCBI taxon
+ids or species names) as leafs.</p></li>
+<li><p>Replace leafs with the data required for homology inference.
+<code>phylostratr</code> supports retrieval of proteomes from
+UniProt.</p></li>
+<li><p>Run the homology inference algorithm (e.g. BLAST), producing a
+tree with raw results as leaves.</p></li>
+<li><p>From the raw results, produce p-values for homology of each
+species against each target.</p></li>
+<li><p>Infer taxonomic specificity of each gene.</p></li>
+<li><p>Analyze the results and diagnose problems.</p></li>
+</ol>
+<p>Currently <code>phylostratr</code> supports using either custom trees
+or the NCBI common tree. For homology inference, a simple protein BLAST
+is offered. However, <code>phylostratr</code> is designed to be
+extendable to additional tools.</p>
+<p>In this vignette, we will show how to stratify the genes of
+<em>Arabidopsis thaliana</em> as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>Trace the lineage of <em>Arabidopsis thaliana</em> as defined by
+the NCBI common tree. For each ancestral node, find species with
+proteomes available in UniProt. For over-represented strata, we select a
+diverse subset of species (for example, of the thousands of bacterial
+proteomes in uniprot, we select just one from each class).</p></li>
+<li><p>Retrieve the proteome for each species in the tree, replacing the
+leaves with proteome file names. This allows us to access all the
+protein data needed for a protein BLAST (next step) while also storing
+the phylogenetic relationship between the species.</p></li>
+<li><p>BLAST the focal proteome (<em>Arabidopsis thaliana</em>) against
+each species in the tree, replacing leaves with the filenames of BLAST
+results. We build a unique BLAST database for each species. Doing this
+makes the BLAST statistics against each individual species to be
+independent of the other species in the tree. Later we will calculate a
+cumulative p-value for existence of a homolog in a particular
+stratum.</p></li>
+<li><p>Next, for each BLAST result, find the best hit against each focal
+gene. The resulting tables (small enough to be easily stored in memory
+now) are recorded as the new leaves of the tree.</p></li>
+<li><p>Finally, the best hit tables are merged, and the genes are
+stratified. In this vignette, we use a simple classifier for homology: a
+subject species is inferred to have a homolog to a focal gene if BLAST
+reports an evalue of less than 1e-5. This is a fairly arbitrary
+criterion and does not attempt to adjust for multiple testing across a
+stratum.</p></li>
+</ol>
+<div id="select-relatives-to-search" class="section level2">
+<h2>Select relatives to search</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(phylostratr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(taxizedb)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">library</span>(onekp)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>weights<span class="ot">=</span><span class="fu">uniprot_weight_by_ref</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>focal_taxid <span class="ot">&lt;-</span> <span class="st">&#39;3702&#39;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>strata <span class="ot">&lt;-</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="co"># Get stratified relatives represented in UniProt</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="fu">uniprot_strata</span>(focal_taxid, <span class="at">from=</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="co"># Select a diverse subset of 5 or fewer representatives from each stratum.</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="fu">strata_apply</span>(<span class="at">f=</span>diverse_subtree, <span class="at">n=</span><span class="dv">5</span>, <span class="at">weights=</span>weights) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="co"># Use a prebuilt set of prokaryotic species</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  use_recommended_prokaryotes <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="co"># Add yeast and humans</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="fu">add_taxa</span>(<span class="fu">c</span>(<span class="st">&#39;4932&#39;</span>, <span class="st">&#39;9606&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="co"># Download genomes, storing the filenames</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  uniprot_fill_strata</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="do">## Replace the UniProt Arabidopsis thaliana proteome with the Araport11 proteome.</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="do">## The path below is specific to my pipeline, you can just use the UniProt genes,</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="do">## if you want. The problem with them is that they include all previous variants</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="do">## of the gene models, raising to 89135 genes. Since `A. thaliana` is the focal</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="do">## species, it is important to be very explicit about version of the proteome.</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>strata<span class="sc">@</span>data<span class="sc">$</span>faa[[<span class="st">&#39;3702&#39;</span>]] <span class="ot">&lt;-</span> <span class="st">&#39;/db/araport11/Araport11_genes.201606.pep.fasta&#39;</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="do">## For the vignette, use only a small subset (1/100) of the sequences:</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>strata<span class="sc">@</span>data<span class="sc">$</span>faa[[<span class="st">&#39;3702&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">thin_fasta</span>(strata<span class="sc">@</span>data<span class="sc">$</span>faa[[<span class="st">&#39;3702&#39;</span>]], <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Remove Klebsormidium nitens</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>strata <span class="ot">&lt;-</span> <span class="fu">prune</span>(strata, <span class="st">&#39;105231&#39;</span>, <span class="at">type=</span><span class="st">&#39;name&#39;</span>)</span></code></pre></div>
+<p>Next I add a proteome from a source outside UniProt. Coverage of the
+Spermatophyta clade is very sparse, so I retrieve a transcriptome from
+the <em>Ginkgo biloba</em> genome available from the 1KP project.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Next add a supplementary proteome from 1KP</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>kp <span class="ot">&lt;-</span> onekp<span class="sc">::</span><span class="fu">retrieve_onekp</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># get the ginkgo proteome from 1KP</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>ginkgo_taxid <span class="ot">&lt;-</span> taxizedb<span class="sc">::</span><span class="fu">name2taxid</span>(<span class="st">&quot;Ginkgo biloba&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>ginkgo_proteome <span class="ot">&lt;-</span> onekp<span class="sc">::</span><span class="fu">filter_by_species</span>(kp, ginkgo_taxid) <span class="sc">%&gt;%</span> onekp<span class="sc">::</span><span class="fu">download_peptides</span>(<span class="at">dir=</span><span class="st">&quot;custom-seqs&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>strata <span class="ot">&lt;-</span> <span class="fu">add_taxa</span>(strata, ginkgo_taxid)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>strata<span class="sc">@</span>data<span class="sc">$</span>faa[[<span class="fu">as.character</span>(ginkgo_taxid)]] <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(ginkgo_proteome)</span></code></pre></div>
+</div>
+<div id="find-similiar-sequences" class="section level2">
+<h2>Find similiar sequences</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># BLAST against each target genome (this will take a few hours)</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>strata <span class="ot">&lt;-</span> <span class="fu">strata_blast</span>(strata, <span class="at">blast_args=</span><span class="fu">list</span>(<span class="at">nthreads=</span><span class="dv">8</span>)) <span class="sc">%&gt;%</span> strata_besthits</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># Merge results into a single hittable</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">merge_besthits</span>(strata)</span></code></pre></div>
+</div>
+<div id="gather-additional-data" class="section level2">
+<h2>Gather additional data</h2>
+<p>Now we can merge additional data:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Note, this will take awhile</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>strata <span class="ot">&lt;-</span> strata <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="co"># add map of UniProt IDs to PFAM domains</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    strata_uniprot_pfam_map <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="co"># add proteome summary data</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    add_proteome_stats <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="co"># add list of proteins that are encoded in the organelle genomes </span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    add_organelle_proteins</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># We are particularly interested in plant organelles, since they are large and</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># often forgotten in proteome datasets.</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">subtree</span>(strata, <span class="fu">name2taxid</span>(<span class="st">&#39;Viridiplantae&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="co"># and we replace the taxon IDs with scientific names</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="fu">strata_convert</span>(<span class="at">target=</span><span class="st">&#39;all&#39;</span>, <span class="at">to=</span><span class="st">&#39;name&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="co"># summarize the numbers of organelle genes present per species</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    organelle_table <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    <span class="co"># sort by ascending phylostratum age</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="sc">-</span>.data<span class="sc">$</span>ps)</span></code></pre></div>
+<p>And get the number of genes in each phylostrata</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>ph <span class="ot">&lt;-</span> <span class="fu">stratify</span>(results, <span class="fu">classify_by_adjusted_pvalue</span>(<span class="fl">0.001</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>ph<span class="sc">$</span>locus <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&#39;</span><span class="sc">\\</span><span class="st">.[0-9]+&#39;</span>, <span class="st">&#39;&#39;</span>, ph<span class="sc">$</span>qseqid, <span class="at">perl=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>ph <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>qseqid) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(mrca_name, ps) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">length</span>(ps))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">table</span>(ph<span class="sc">$</span>mrca_name)</span></code></pre></div>
+</div>
+<div id="figures" class="section level2">
+<h2>Figures</h2>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
